@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import axios from 'axios'
+import Gallery from './compnents/Gallery'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      gallery: [ 
+      ],
+
+    }
+  }
+  componentDidMount() {
+    // Using compoundDidMount to fetch data using axious and setting it in to state
+    const url = 'https://jsonplaceholder.typicode.com/photos'
+    axios.get(url).then(response => {
+      this.setState({
+        gallery: response.data.slice(0,50),
+      })
+    })
+  }
+
+  render() {
+    //passing props to the child component to render.
+    const { gallery } = this.state
+      return(
+        <div>
+          <Gallery gallery={gallery} />
+        </div>
+    )
+  }
 }
 
 export default App;
